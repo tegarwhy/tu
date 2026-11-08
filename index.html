@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartPick SAW - Sistem Pendukung Keputusan</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>html,body{margin:0}.material-symbols-outlined{font-size:inherit}@media print{header,#bar,.np{display:none!important}main{padding-top:0!important}body{background:#fff}}</style>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{colors:{"surface":"#f8f9ff","error":"#ba1a1a","surface-tint":"#2d6197","surface-container-low":"#eff4ff","surface-container-high":"#dce9ff","surface-container-lowest":"#ffffff","primary-container":"#0f4c81","primary-fixed":"#d2e4ff","outline":"#727780","on-primary-fixed":"#001c37","primary":"#00355f","on-primary":"#ffffff","secondary":"#4b41e1","surface-variant":"#d3e4fe","surface-container":"#e5eeff","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","on-surface-variant":"#42474f","error-container":"#ffdad6","on-error-container":"#93000a"},spacing:{"space-sm":"0.5rem","margin":"2rem","space-xl":"2rem","space-xs":"0.25rem","space-md":"1rem","space-lg":"1.5rem"},fontFamily:{"head":["Plus Jakarta Sans"],"body":["Inter"]}}}}</script></head>
+<body class="bg-surface font-body text-[14px] text-on-surface">
+<header class="fixed top-0 w-full z-40 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
+ <div class="h-16 max-w-7xl mx-auto px-4 md:px-margin flex items-center justify-between gap-4">
+  <div class="flex items-center gap-3"><div class="w-9 h-9 rounded-lg bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[20px]">tune</span></div>
+   <div class="flex flex-col"><span class="font-head font-semibold text-[18px] text-primary">SmartPick SAW</span><span class="text-[11px] font-semibold text-outline">Sistem Pendukung Keputusan</span></div></div>
+  <nav id="nav" class="hidden lg:flex items-center gap-1 bg-surface-container-low p-1 rounded-xl"></nav>
+  <button id="btnExport" class="flex items-center gap-1 px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-semibold text-[13px]"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">file_download</span><span class="hidden sm:inline">Ekspor Data</span></button>
+ </div>
+ <nav id="navM" class="lg:hidden flex gap-1 overflow-x-auto px-4 pb-2"></nav>
+</header>
+<main class="w-full pt-28 lg:pt-16"><div class="max-w-7xl mx-auto px-4 md:px-margin py-4 flex flex-col gap-6">
+ <div id="bar" class="flex flex-col xl:flex-row xl:items-center justify-between gap-4 bg-surface-container-lowest p-4 rounded-xl shadow-sm">
+  <div class="flex flex-wrap items-center gap-4"><div id="seg" class="inline-flex p-1 bg-surface-container-low rounded-xl"></div><div id="kpi" class="flex flex-wrap gap-1"></div></div>
+  <div class="flex items-center gap-1"><button id="btnPdf" class="px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-semibold text-[13px] flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">picture_as_pdf</span>Export PDF Laporan</button>
+  <button id="btnReset" class="px-3 py-2 rounded-lg bg-surface-container hover:bg-surface-container-high font-semibold text-[13px] flex items-center gap-1"><span class="material-symbols-outlined text-[18px]">restart_alt</span>Reset Default</button></div>
+ </div>
+ <section id="p-rekomendasi" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+  <div class="lg:col-span-4 flex flex-col gap-4 lg:sticky lg:top-20">
+   <div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm flex flex-col gap-4">
+    <div class="flex items-start justify-between gap-2"><div><div class="font-head font-semibold text-[18px] text-primary">Prioritas Kriteria</div><div class="text-[12px] text-on-surface-variant">Geser untuk mengatur seberapa penting tiap kriteria</div></div><span id="sigma" class="px-2 py-1 bg-primary-fixed text-on-primary-fixed rounded-full text-[11px] font-semibold whitespace-nowrap"></span></div>
+    <div class="p-2 bg-surface-container-low rounded-lg flex items-center gap-2"><span class="material-symbols-outlined text-surface-tint text-[20px]">calculate</span><div><div class="text-[11px] font-semibold">Skor Preferensi V<sub>i</sub></div><div class="text-[12px] text-on-surface-variant">V = Σ (w × R) , rentang 0,000 s/d 1,000</div></div></div>
+    <div id="sliders" class="flex flex-col gap-4"></div>
+    <label class="flex flex-col gap-1 text-[13px] font-semibold">Batas Budget Maksimal (Rp Juta)<div class="relative"><span class="absolute left-3 top-2 text-on-surface-variant">Rp</span><input id="budget" type="text" inputmode="decimal" placeholder="Contoh: 20 (kosongkan jika bebas)" class="w-full pl-9 pr-3 py-2 bg-surface-container-low rounded-lg font-medium focus:outline-none focus:ring-2 focus:ring-primary-container"></div></label>
+    <button id="btnHitung" class="w-full py-3 rounded-xl bg-primary hover:bg-primary-container text-on-primary font-head font-semibold text-[16px] flex items-center justify-center gap-2 shadow-md active:scale-[0.99]"><span class="material-symbols-outlined">bolt</span>Hitung Rekomendasi SAW</button>
+   </div>
+   <div class="bg-surface-container p-4 rounded-xl text-[12px] text-on-surface-variant"><b class="text-primary">Normalisasi:</b> Benefit = nilai / nilai maksimum. Cost = nilai minimum / nilai alternatif.</div>
+  </div>
+  <div class="lg:col-span-8 flex flex-col gap-6"><div id="top3"></div><div id="tabel"></div></div>
+ </section>
+ <section id="p-data" class="hidden"></section>
+ <section id="p-matriks" class="hidden flex-col gap-6"></section>
+ <section id="p-laporan" class="hidden"></section>
+</div></main>
+<div id="modal" class="hidden fixed inset-0 z-50 bg-black/40 items-center justify-center p-4"><div id="mbox" class="bg-white rounded-xl max-w-2xl w-full max-h-[85vh] overflow-auto p-6 shadow-xl"></div></div>
+<div id="toast" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-on-surface text-white px-4 py-2 rounded-lg text-[13px]"></div>
+<footer class="np w-full bg-surface-container-lowest mt-8"><div class="max-w-7xl mx-auto px-4 py-6 text-[12px] text-outline">SmartPick SAW - Simple Additive Weighting. Data produk adalah data contoh untuk keperluan belajar.</div></footer>
+<script src="data.js"></script><script src="script.js"></script>
+</body></html>
